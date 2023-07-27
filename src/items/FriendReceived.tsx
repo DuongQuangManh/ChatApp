@@ -8,6 +8,7 @@ import {AppDisPatch, RootState} from '../redux/store';
 import {setUserPick} from '../redux/userSlice';
 import {changestatus, deleteReqId} from '../redux/friendreqSlice';
 import {addFriend} from '../redux/friendSlice';
+import socketServcies from '../utils/socketService';
 interface itemProps {
   item: any;
   navi?: any;
@@ -32,8 +33,8 @@ const FriendReceived: FC<itemProps> = ({item, navi}) => {
       id: user._id,
     };
     await dispatch(changestatus({id: item._id, token: user.token, obj: objcg}));
-    await dispatch(addFriend({obj: obj2, id: user._id}));
-    await dispatch(addFriend({obj: obj1, id: user._id}));
+    await dispatch(addFriend({obj: obj1}));
+    await socketServcies.emit('confirm_req', JSON.stringify(obj2));
   };
   const handlerDelete = () => {
     const obj = {

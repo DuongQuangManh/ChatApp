@@ -21,25 +21,21 @@ export const getFriend = createAsyncThunk('friend/get', async (id: any) => {
   }
 });
 
-export const addFriend = createAsyncThunk(
-  'friend/add',
-  async ({obj, id}: any) => {
-    const res = await fetch(FRIEND_ADD, {
-      method: 'POST',
-      headers: {
-        'Content-type': 'application/json',
-      },
-      body: JSON.stringify(obj),
-    });
-    if (res.status == 200) {
-      const data = await res.json();
-
-      return data;
-    } else {
-      return {error: 'Lỗi'};
-    }
-  },
-);
+export const addFriend = createAsyncThunk('friend/add', async ({obj}: any) => {
+  const res = await fetch(FRIEND_ADD, {
+    method: 'POST',
+    headers: {
+      'Content-type': 'application/json',
+    },
+    body: JSON.stringify(obj),
+  });
+  if (res.status == 200) {
+    const data = await res.json();
+    return data;
+  } else {
+    return {error: 'Lỗi'};
+  }
+});
 
 const initialState = {
   data: [] as FriendModel[],

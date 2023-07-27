@@ -40,6 +40,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     borderColor: Colors.GRAYC_COLOR,
     borderWidth: 1,
+    marginBottom: 10,
   },
   img: {
     width: 80,

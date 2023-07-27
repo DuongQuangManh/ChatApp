@@ -7,7 +7,7 @@ import {
   View,
   ScrollView,
 } from 'react-native';
-import React from 'react';
+import React, {useEffect} from 'react';
 import Colors from '../constains/Colors';
 import {WINDOW_WIDTH} from '../utils';
 import {Icon, Input} from '../components';
@@ -17,12 +17,15 @@ import {AppDisPatch, RootState} from '../redux/store';
 import {logout} from '../redux/userSlice';
 import {useNavigation} from '@react-navigation/native';
 import ItemFriend from '../items/ItemFriend';
+import socketServcies from '../utils/socketService';
+import {addFriend} from '../redux/friendSlice';
 
 const HomeScreen = () => {
   const dispatch = useDispatch<AppDisPatch>();
   const navigation = useNavigation<any>();
   const token = useSelector((state: RootState) => state.userSlice.user.token);
   const friend = useSelector((state: RootState) => state.friendSlice.data);
+  const user = useSelector((state: RootState) => state.userSlice.user);
   const goToLogin = () => {
     navigation.popToTop();
   };
@@ -32,6 +35,15 @@ const HomeScreen = () => {
   const goToChat = () => {
     navigation.navigate('ChatScreen');
   };
+  useEffect(() => {
+    socketServcies.on('check_confirm', async (data: any) => {
+      const obj = await JSON.parse(data);
+      if (obj.user_id == user._id) {
+        console.log('đã load lại vì có check_confirm mới');
+        dispatch(addFriend({obj}));
+      }
+    });
+  }, []);
   return (
     <View style={styles.container}>
       <View style={styles.box1}>
